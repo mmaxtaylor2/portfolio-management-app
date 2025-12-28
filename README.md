@@ -25,6 +25,7 @@ portfolio-management-app/
 ├── requirements.txt      # Dependency file for setup and deployment
 └── README.md
 
+
 Local Installation and Running:
 
 Clone the repository:
