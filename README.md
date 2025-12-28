@@ -29,11 +29,16 @@ portfolio-management-app/
 Local Installation and Running:
 
 Clone the repository:
+
 git clone https://github.com/mmaxtaylor2/portfolio-management-app.git
 cd portfolio-management-app
+
 Install dependencies:
+
 pip install -r requirements.txt
+
 Run the Streamlit application:
+
 streamlit run app.py
 
 Deployment (Streamlit Cloud):
