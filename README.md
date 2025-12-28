@@ -1,28 +1,45 @@
-# Portfolio Management App
+Portfolio Management & Tracking App
 
-A personal brokerage-style portfolio tracker that simulates live trading, FIFO/AvgCost valuation, cash management, and performance visualization. Built with Python and Streamlit.
+This project is a Python and Streamlit-based portfolio tracker for managing stock holdings, tracking performance over time, monitoring cash balances, and visualizing changes in portfolio value. The application uses yfinance to pull real-time market data and stores activity in CSV files, allowing the portfolio state to persist across sessions.
 
-## Key Features
-- Add, buy, and sell positions with live pricing
-- FIFO & Average Cost valuation methods
-- Automated net worth tracking and history logging
-- Realized vs Unrealized P/L calculations
-- Cash balance management (deposit/withdraw)
-- Performance charts (Net Worth & P/L over time)
-- Downloadable account statement (CSV export)
+Features:
 
-## How to Run Locally
+Add, edit, and delete stock holdings
+Real-time quote updates through yfinance
+Track buy/sell transactions and cost basis
+Store portfolio value history over time
+Maintain a cash ledger and current cash balance
+CSV-based data storage (no database required)
+Streamlit user interface with multiple pages
+
+File Structure:
+
+portfolio-management-app/
+│
+├── app.py                # Main Streamlit application
+├── portfolio.csv         # Active positions and quantities
+├── transactions.csv      # Historical buy/sell records
+├── value_history.csv     # Logged portfolio value per update
+├── cash_balance.csv      # Current cash amount
+├── cash_ledger.csv       # Cash activity over time
+├── requirements.txt      # Dependency file for setup and deployment
+└── README.md
+
+Local Installation and Running:
+
+Clone the repository:
 git clone https://github.com/mmaxtaylor2/portfolio-management-app.git
 cd portfolio-management-app
+Install dependencies:
 pip install -r requirements.txt
+Run the Streamlit application:
 streamlit run app.py
 
-## File Structure
-portfolio-management-app/
-│ app.py
-│ portfolio.csv
-│ transactions.csv
-│ value_history.csv
-│ cash.txt
-│ README.md
+Deployment (Streamlit Cloud):
 
+Go to: https://share.streamlit.io/
+Connect your GitHub account
+Select the repository: mmaxtaylor2/portfolio-management-app
+Choose branch: main
+Choose file to run: app.py
+Deploy the application
