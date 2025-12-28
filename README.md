@@ -2,6 +2,24 @@
 
 This project is a Python and Streamlit-based portfolio tracker for managing stock holdings, tracking performance over time, monitoring cash balances, and visualizing changes in portfolio value. The application uses yfinance to pull real-time market data and stores activity in CSV files, allowing the portfolio state to persist across sessions.
 
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Holdings
+![Holdings](screenshots/holdings.png)
+
+### Trade
+![Trade](screenshots/trade.png)
+
+### Cash Management
+![Cash Management](screenshots/cash.png)
+
+### Performance Charts
+![Charts](screenshots/charts.png)
+
+
 ## Features:
 
 Add, edit, and delete stock holdings
