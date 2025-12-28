@@ -1,0 +1,185 @@
+streamlit run app.pyimport streamlit as st 
+import pandas as pd import yfinance as yf 
+import plotly.express as px import datetime 
+import os
+
+# ------------------------------------------------
+# APP SETUP
+# ------------------------------------------------
+st.set_page_config(page_title="Portfolio Tracker", layout="wide")
+st.title("Portfolio Tracking App")
+st.write("Use the sidebar to navigate between sections.")
+
+DATA_FILE = "portfolio.csv"
+HISTORY_FILE = "value_history.csv"
+
+# Create files if missing
+if not os.path.exists(DATA_FILE):
+    pd.DataFrame(columns=["Ticker", "Shares", "Cost Basis"]).to_csv(DATA_FILE, index=False)
+
+if not os.path.exists(HISTORY_FILE):
+    pd.DataFrame(columns=["Date", "Value"]).to_csv(HISTORY_FILE, index=False)
+
+df = pd.read_csv(DATA_FILE)
+
+
+# ------------------------------------------------
+# SAFE PRICE FETCHING (prevents KeyError)
+# ------------------------------------------------
+def load_prices(tickers):
+    data = yf.download(tickers, period="1d", progress=False)
+
+    # Single ticker case (Series)
+    if isinstance(data, pd.Series):
+        if "Adj Close" in data.index:
+            return pd.Series({tickers: data["Adj Close"]})
+        elif "Close" in data.index:  
+            return pd.Series({tickers: data["Close"]})
+        else:
+            return pd.Series({tickers: float("nan")})
+
+    # Multi-ticker case (DataFrame or MultiIndex)
+    # Prefer Adj Close, fallback to Close
+    if isinstance(data.columns, pd.MultiIndex):
+        cols = data.columns.get_level_values(0).unique()
+        if "Adj Close" in cols:
+            return data["Adj Close"].iloc[-1]
+        elif "Close" in cols:
+            return data["Close"].iloc[-1]
+        else:
+            return pd.Series(index=tickers, data=float("nan"))
+
+    # Normal DataFrame return
+    if "Adj Close" in data.columns:
+        return data["Adj Close"].iloc[-1]
+    elif "Close" in data.columns:
+        return data["Close"].iloc[-1]
+    else:
+        return pd.Series(index=tickers, data=float("nan"))
+
+
+# ------------------------------------------------
+# SIDEBAR
+# ------------------------------------------------
+page = st.sidebar.selectbox("Navigate to:", ["Home", "Holdings", "Performance", "Charts"])
+
+
+# ------------------------------------------------
+# HOME
+# ------------------------------------------------
+if page == "Home":
+    st.header("Welcome")
+    st.write("Track holdings, live market value, and performance history.")
+
+
+# ------------------------------------------------
+# HOLDINGS PAGE
+# ------------------------------------------------
+elif page == "Holdings":
+    st.header("Manage Portfolio")
+
+    ticker = st.text_input("Ticker (e.g. AAPL)")
+    shares = st.number_input("Shares", min_value=0.0, step=1.0)
+    cost = st.number_input("Cost Basis", min_value=0.0, step=0.10)
+
+    if "edit_index" not in st.session_state:
+        st.session_state.edit_index = None
+
+    if st.session_state.edit_index is not None:
+        row = df.loc[st.session_state.edit_index]
+        ticker = st.text_input("Ticker", value=row["Ticker"])
+        shares = st.number_input("Shares", value=row["Shares"])
+        cost = st.number_input("Cost Basis", value=row["Cost Basis"])
+
+    if st.button("Save Position"):
+        if ticker.strip() == "":
+            st.warning("Enter a ticker before saving.")
+        else:
+            rec = [ticker.upper(), shares, cost]
+            if st.session_state.edit_index is not None:
+                df.iloc[st.session_state.edit_index] = rec
+                st.session_state.edit_index = None
+            else:
+                df.loc[len(df)] = rec
+            df.to_csv(DATA_FILE, index=False)
+            st.rerun()
+
+    st.write("---")
+    st.subheader("Current Holdings")
+
+    for index, row in df.iterrows():
+        c1, c2, c3, c4, c5 = st.columns([2,2,2,1,1])
+        c1.write(row["Ticker"])
+        c2.write(row["Shares"])
+        c3.write(f"${row['Cost Basis']:.2f}")
+
+        if c4.button("Edit", key=f"e{index}"):
+            st.session_state.edit_index = index
+            st.rerun()
+
+        if c5.button("Delete", key=f"d{index}"):
+            df = df.drop(index)
+            df.to_csv(DATA_FILE, index=False)
+            st.rerun()
+
+
+# ------------------------------------------------
+# PERFORMANCE PAGE
+# ------------------------------------------------
+elif page == "Performance":
+    st.header("Portfolio Performance")
+
+    if df.empty:
+        st.write("No holdings yet.")
+    else:
+        tickers = df["Ticker"].tolist()
+        prices = load_prices(tickers)
+
+        df["Current Price"] = df["Ticker"].map(prices)
+        df["Market Value"] = df["Shares"] * df["Current Price"]
+        df["Cost Value"] = df["Shares"] * df["Cost Basis"]
+        df["P/L"] = df["Market Value"] - df["Cost Value"]
+
+        total_value = df["Market Value"].sum()
+        st.subheader(f"Total Value: ${total_value:,.2f}")
+        st.dataframe(df)
+
+        history = pd.read_csv(HISTORY_FILE)
+        today = datetime.date.today().strftime("%Y-%m-%d")
+
+        if today not in history["Date"].values:
+            history.loc[len(history)] = [today, total_value]
+            history.to_csv(HISTORY_FILE, index=False)
+
+
+# ------------------------------------------------
+# CHARTS PAGE
+# ------------------------------------------------
+elif page == "Charts":
+    st.header("Portfolio Charts")
+
+    df = pd.read_csv(DATA_FILE)
+
+    if df.empty:
+        st.write("Add holdings first.")
+    else:
+        tickers = df["Ticker"].tolist()
+        prices = load_prices(tickers)
+
+        df["Current Price"] = df["Ticker"].map(prices)
+        df["Market Value"] = df["Shares"] * df["Current Price"]
+
+        # Pie chart
+        fig_pie = px.pie(df, names="Ticker", values="Market Value", title="Allocation by Ticker")
+        st.plotly_chart(fig_pie, use_container_width=True)
+
+        st.write("---")
+        st.subheader("Value Over Time")
+
+        history = pd.read_csv(HISTORY_FILE)
+        if not history.empty:
+            fig_line = px.line(history, x="Date", y="Value", title="Portfolio Value Over Time")
+            st.plotly_chart(fig_line, use_container_width=True)
+        else:
+            st.write("Go to Performance to record your first value.")
+
