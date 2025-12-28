@@ -1,8 +1,8 @@
-Portfolio Management & Tracking App
+## Portfolio Management & Tracking App
 
 This project is a Python and Streamlit-based portfolio tracker for managing stock holdings, tracking performance over time, monitoring cash balances, and visualizing changes in portfolio value. The application uses yfinance to pull real-time market data and stores activity in CSV files, allowing the portfolio state to persist across sessions.
 
-Features:
+## Features:
 
 Add, edit, and delete stock holdings
 Real-time quote updates through yfinance
@@ -12,7 +12,7 @@ Maintain a cash ledger and current cash balance
 CSV-based data storage (no database required)
 Streamlit user interface with multiple pages
 
-File Structure:
+## File Structure:
 
 portfolio-management-app/
 │
@@ -26,7 +26,7 @@ portfolio-management-app/
 └── README.md
 
 
-Local Installation and Running:
+## Local Installation and Running:
 
 Clone the repository:
 
