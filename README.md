@@ -5,19 +5,19 @@ This project is a Python and Streamlit-based portfolio tracker for managing stoc
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/Dashboard.png)
 
-### Holdings
-![Holdings](screenshots/holdings.png)
+### Portfolio Overview / Positions
+![Transactions](screenshots/Transactions.png)
 
-### Trade
-![Trade](screenshots/trade.png)
+### Trade Entry
+![Trade](screenshots/Trade.png)
 
 ### Cash Management
-![Cash Management](screenshots/cash.png)
+![Cash](screenshots/Cash.png)
 
 ### Performance Charts
-![Charts](screenshots/charts.png)
+![Charts](screenshots/Charts.png)
 
 
 ## Features:
