@@ -12,19 +12,17 @@ Maintain a cash ledger and current cash balance
 CSV-based data storage (no database required)
 Streamlit user interface with multiple pages
 
-## File Structure:
+## File Structure
 
 portfolio-management-app/
-│
-├── app.py                # Main Streamlit application
-├── portfolio.csv         # Active positions and quantities
-├── transactions.csv      # Historical buy/sell records
-├── value_history.csv     # Logged portfolio value per update
-├── cash_balance.csv      # Current cash amount
-├── cash_ledger.csv       # Cash activity over time
-├── requirements.txt      # Dependency file for setup and deployment
-└── README.md
-
+├── app.py # Main Streamlit application
+├── portfolio.csv # Active positions and quantities
+├── transactions.csv # Buy/sell trade records
+├── value_history.csv # Portfolio value logged over time
+├── cash_balance.csv # Current cash on hand
+├── cash_ledger.csv # Cash movement history
+├── requirements.txt # Dependencies (streamlit, yfinance, pandas, plotly)
+└── README.md # Documentation
 
 ## Local Installation and Running:
 
