@@ -2,29 +2,13 @@
 
 This project is a Python and Streamlit-based portfolio tracker for managing stock holdings, tracking performance over time, monitoring cash balances, and visualizing changes in portfolio value. The application uses yfinance to pull real-time market data and stores activity in CSV files, allowing the portfolio state to persist across sessions.
 
+## Problem Context
+
+Many retail portfolio tools obscure transaction-level mechanics such as cash flows, realized vs unrealized performance, and position-level history. This project was built to provide transparent, auditable portfolio tracking where holdings, trades, and cash balances persist explicitly across sessions.
+
 ## Live App Demo
 
 https://portfolio-management-app.streamlit.app
-
-
-
-## Screenshots
-
-### Dashboard
-![Dashboard](screenshots/Dashboard.png)
-
-### Portfolio Overview / Positions
-![Transactions](screenshots/Transactions.png)
-
-### Trade Entry
-![Trade](screenshots/Trade.png)
-
-### Cash Management
-![Cash](screenshots/Cash.png)
-
-### Performance Charts
-![Charts](screenshots/Charts.png)
-
 
 ## Features:
 
@@ -71,3 +55,20 @@ Select the repository: mmaxtaylor2/portfolio-management-app
 Choose branch: main
 Choose file to run: app.py
 Deploy the application
+
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/Dashboard.png)
+
+### Portfolio Overview / Positions
+![Transactions](screenshots/Transactions.png)
+
+### Trade Entry
+![Trade](screenshots/Trade.png)
+
+### Cash Management
+![Cash](screenshots/Cash.png)
+
+### Performance Charts
+![Charts](screenshots/Charts.png)
